@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Lokey">
+<meta charset="utf-8" />
+<head>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+  <title>P5 chat</title>
+</head>
+<body>
+    <h2>Welcome to P5-chat</h2>
+    <!--Required here because it needs to be here before bootstrap and before app.js -->
+    <script>
+      window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+    </script>    
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="app.js"></script>
+  </body>
+</html>

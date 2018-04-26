@@ -1,0 +1,7 @@
+node_modules
+dist
+src/
+build/src
+settings.json
+.jscs.json
+package-lock.json

@@ -1,0 +1,39 @@
+{
+  "name": "P5-chat",
+  "version": "0.0.1",
+  "productName": "P5-chat",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sigurthorb/P5-chat.git"
+  },
+  "description": "Chat software built on top of the P5 npm packet",
+  "main": "main.js",
+  "scripts": {
+    "start": "grunt build && electron ."
+  },
+  "author": "Sigurthor Bjorgvinsson && Pedro Carvalho",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/Sigurthorb/P5-chat/issues"
+  },
+  "homepage": "https://github.com/Sigurthorb/P5-chat#readme",
+  "devDependencies": {
+    "electron": "~1.6.2",
+    "electron-packager": "^10.1.0",
+    "electron-reload": "^1.2.1",
+    "electron-winstaller": "^2.6.3",
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-electron": "^6.0.0",
+    "grunt-electron-installer-windows": "^0.2.0",
+    "grunt-electron-packager": "^0.1.1",
+    "grunt-jsbeautifier": "^0.2.13",
+    "load-grunt-tasks": "^3.5.2"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}

@@ -1,0 +1,1 @@
+window.event = require('electron').ipcRenderer;
