@@ -18,22 +18,18 @@
   },
   "homepage": "https://github.com/Sigurthorb/P5-chat#readme",
   "devDependencies": {
-    "electron": "~1.6.2",
-    "electron-packager": "^10.1.0",
-    "electron-reload": "^1.2.1",
-    "electron-winstaller": "^2.6.3",
-    "grunt": "^1.0.1",
+    "electron": "^1.8.4",
+    "electron-packager": "^12.0.1",
+    "electron-reload": "^1.2.2",
+    "grunt": "^1.0.2",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-electron": "^6.0.0",
-    "grunt-electron-installer-windows": "^0.2.0",
-    "grunt-electron-packager": "^0.1.1",
+    "grunt-contrib-watch": "^1.0.1",
+    "grunt-electron": "^9.0.0",
+    "grunt-electron-packager": "^0.2.1",
     "grunt-jsbeautifier": "^0.2.13",
     "load-grunt-tasks": "^3.5.2"
   },
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
-  }
+  "dependencies": {}
 }
