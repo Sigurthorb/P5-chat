@@ -18,7 +18,7 @@ let startListen = function(server) {
 
 module.exports = function(ipcMain, dialog, _windowModule) {
   windowModule = _windowModule;
-  //p5 = require("P5-node");
+  p5 = require("p5-node");
   let server = null;
 
   ipcMain.on("SendSynMessage", function(obj, publickey, symmetrickey, channel) {
