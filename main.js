@@ -1,6 +1,6 @@
 const {app, Menu, Tray, dialog, ipcMain, BrowserWindow} = require('electron');
 
-
+/*
 if(require('electron-squirrel-startup')) return;
 
 let handleStartupEvent = function() {
@@ -45,7 +45,7 @@ let handleStartupEvent = function() {
 if (handleStartupEvent()) {
   return;
 }
-
+*/
 function ExitFromTray() {
   // TODO: exit service correctly
   // TODO: close window
