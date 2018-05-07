@@ -6,6 +6,7 @@ let isQuitting = false;
 
 const path = require('path')
 const url = require('url')
+const startUrl = process.env.ELECTRON_START_URL || url.format({ pathname: path.join(__dirname, '/../build/index.html'), protocol: 'file:', slashes: true })
 
 let config = require("./config.js");
 
@@ -31,14 +32,9 @@ function createWindow (showWindow) {
     preload: path.join(__dirname, "preload.js")
   }});
 
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, "..", '/dist/index.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
-
   // development tool window
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
+  mainWindow.loadURL(startUrl);
 
   mainWindow.on('close', function (event) {
     if(!isQuitting) {
@@ -77,7 +73,6 @@ function readyToSend() {
 }
 
 function getMainWindow() {
-
   return mainWindow;
 }
 
