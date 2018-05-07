@@ -5,5 +5,6 @@ Electron application that uses the P5 module for communication
 
 #### Development
 
-`npm i -g grunt`
-`npm i && cd app && npm i && cd -`
+Start React - `npm start`
+
+Start Electron - `npm run electron-dev`
