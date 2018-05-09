@@ -24,7 +24,6 @@ function createWindow (showWindow) {
     resizable: false,
     width: 900,
     height: 600,
-    frame: true,
     show: showWindow,
     icon: config["icon-path"],
     webPreferences: {
@@ -36,6 +35,7 @@ function createWindow (showWindow) {
   mainWindow.webContents.openDevTools()
   mainWindow.loadURL(startUrl);
 
+  //This is called when the main window is closing
   mainWindow.on('close', function (event) {
     if(!isQuitting) {
       event.preventDefault();
@@ -58,6 +58,7 @@ function show() {
   }
 }
 
+//This is called when the app is quitting
 function close() {
   isQuitting = true;
 }

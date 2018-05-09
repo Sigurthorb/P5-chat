@@ -60,20 +60,21 @@ let trayModule = require("./electronComponents/tray.js")(Tray, Menu, windowModul
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', trayModule.createTray)
+app.on('ready', () => {
+  if (process.platform !== 'darwin') { 
+    trayModule.createTray();
+    //No need for a Tray on Mac. We'll just use the dock icon ;)
+  } else {
+    windowModule.createWindow(true); // can decide if we want to show window or not when app is opened
+  }
+})
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  app.quit();
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  // if (process.platform !== 'darwin') {
-  //   app.quit();
-  // }
+app.on('before-quit', function () { 
+  // On OS X, quit the app when the user quits explicitly with Cmd + Q
+  if (process.platform === 'darwin') {
+    ExitFromTray();
+  }
 });
 
-// app.on('activate', () => {
-//   // On macOS it's common to re-create a window in the app when the
-//   // dock icon is clicked and there are no other windows open.
-//   trayModule.createTray()
-// })
+//On OS X, show or create a mainWindow when the user clicks the dock icon
+app.on('activate', windowModule.show);
