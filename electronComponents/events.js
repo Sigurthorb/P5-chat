@@ -12,6 +12,7 @@ let send = function(topic, data) {
 
 let startListen = function(server) {
   server.on("synMessage", function(data) {
+    server.addSymmetricKey(data.symmetricKey);
     send("synMessage", data);
   });
 
@@ -24,12 +25,17 @@ let startListen = function(server) {
 
 module.exports = function(ipcMain, dialog, _windowModule) {
   windowModule = _windowModule;
-  p5 = require('../../P5');
+  p5 = require('p5-node');
   let server = null;
 
-  ipcMain.on("SendSynMessage", function(evt, publickey, symmetrickey, channel) {
+  ipcMain.on("SendSynMessage", function(evt, publicKey, channel) {
     if(server) {
-      server.sendSyn();
+      console.log("sendInitialKey: ", publicKey);
+      let opts = {};
+      if(channel) opts.channel = channel;
+
+      let newSymmetricKey = server.sendSynMsg(publicKey, new Buffer(''), opts);
+      send("SynMessageSent", {key:newSymmetricKey});
     }
   });
 
