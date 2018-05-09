@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Header from './Header';
 
 class Home extends Component {
+
   render() {
+    if (localStorage.appData) {
+      return <Redirect to='/Chat' />
+    }
+
     return (
       <div className="home">
         <Header />

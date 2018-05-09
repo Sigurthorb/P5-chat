@@ -60,6 +60,8 @@ function show() {
 
 //This is called when the app is quitting
 function close() {
+  //clear localStorage
+  mainWindow.webContents.executeJavaScript('localStorage.clear()');
   isQuitting = true;
 }
 

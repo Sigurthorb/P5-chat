@@ -17,13 +17,13 @@ class Chat extends Component {
   constructor(props){
     super(props);
     let self = this;
+    let data = localStorage.appData ? JSON.parse(localStorage.appData) : [];
 
     this.state = {
-      appData:[
+      appData:data,
         // {id:0, key:"ThisIsTheSymmetricKey", keyType:"sym", alias:"Ron", channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Hello there ladies and gentleman", sent:false}, {timestamp:"4/26/18 @ 4:30pm", message:"Are you ready to rock", sent:true}]},
         // {id:1, key:"thisistherightlengthofkeyforenca", keyType:"sym",  channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Looking for a complication", sent:false}]},
         // {id:2, key:"thisistherightlengthofkeyforencb", keyType:"sym",  channel:"", messages:[]}
-      ],
       addContactShow:false,
       myInfoShow:false
     };
@@ -46,7 +46,7 @@ class Chat extends Component {
       let messages = newData[conversationId].messages;
 
       messages.push({message:newMsg, sent:sent, timestamp:timestamp});
-
+      localStorage.appData = JSON.stringify(newData);
       return { appData:newData };
     });
   }
@@ -58,7 +58,7 @@ class Chat extends Component {
 
       newData.push(newContact);
       props.history.push('/Chat/' + newContact.id);
-
+      localStorage.appData = JSON.stringify(newData);
       return { appData:newData };
     });
   }
