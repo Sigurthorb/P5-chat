@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { AddContactModal } from './Modal';
 
 const electron = window.require('electron');
 const ipcRenderer  = electron.ipcRenderer;
@@ -19,11 +20,18 @@ class Chat extends Component {
 
     this.state = {
       appData:[
-        {id:0, key:"ThisIsTheSymmetricKey", keyType:"sym", alias:"Ron", channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Hello there ladies and gentleman", sent:false}, {timestamp:"4/26/18 @ 4:30pm", message:"Are you ready to rock", sent:true}]},
-        {id:1, key:"thisistherightlengthofkeyforenca", keyType:"sym",  channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Looking for a complication", sent:false}]},
-        {id:2, key:"thisistherightlengthofkeyforencb", keyType:"sym",  channel:"", messages:[]}
-      ]
+        // {id:0, key:"ThisIsTheSymmetricKey", keyType:"sym", alias:"Ron", channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Hello there ladies and gentleman", sent:false}, {timestamp:"4/26/18 @ 4:30pm", message:"Are you ready to rock", sent:true}]},
+        // {id:1, key:"thisistherightlengthofkeyforenca", keyType:"sym",  channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Looking for a complication", sent:false}]},
+        // {id:2, key:"thisistherightlengthofkeyforencb", keyType:"sym",  channel:"", messages:[]}
+      ],
+      addContactShow:false,
+      myInfoShow:false
     };
+
+    ipcRenderer.on("synMessage", function(evt, payload) {
+        console.log("New Message ", payload);
+        self.pushContact({key:payload.symmetricKey, keyType:'sym', alias:'', channel:payload.channel, messages:[]});
+    });
 
     ipcRenderer.on("dataMessage", function(evt, payload) {
         console.log("New Message ", payload.data);
@@ -43,18 +51,39 @@ class Chat extends Component {
     });
   }
 
+  pushContact(newContact){
+    this.setState((state, props) => {
+      newContact.id = state.appData.length;
+      let newData = JSON.parse(JSON.stringify(state.appData)); //Deep Clone the Object
+
+      newData.push(newContact);
+      props.history.push('/Chat/' + newContact.id);
+
+      return { appData:newData };
+    });
+  }
+
+  showAddContact(){
+    this.setState({addContactShow:true});
+  }
+
+  hideAddContact(){
+    this.setState({addContactShow:false});
+  }
+
+
   render() {
     let data = this.state.appData;
-    console.log(this.props.match.params);
     //TO DO, search for the object with the correct id (id may not always be the index)
     let activeConversation = this.props.match.params.id ? data[this.props.match.params.id] : null;
 
     return (
       <div className="chat">
-        <ChatHeader />
+        <ChatHeader addContact={this.showAddContact.bind(this)} />
         <ChatHistory conversations={data}/>
         <ChatConversation conversation={activeConversation} />
-        <ChatInput activeKey={activeConversation && activeConversation.key} keyType={activeConversation && activeConversation.keyType} onSend={this.pushMessage.bind(this)}/>
+        <ChatInput activeKey={activeConversation && activeConversation.key} keyType={activeConversation && activeConversation.keyType} onSend={this.pushMessage.bind(this)} disabled={!activeConversation} />
+        <AddContactModal show={this.state.addContactShow} handleClose={this.hideAddContact.bind(this)} addContact={this.pushContact.bind(this)} />
       </div>
     );
   }
@@ -64,7 +93,7 @@ class ChatHeader extends Component {
   render() {
     return (
       <div className="chat-header">
-        <button className="btn btn-light">Add Contact</button>
+        <button onClick={this.props.addContact} className="btn btn-light">Add Contact</button>
         <h3 className="logo"><em>P5</em> Chat</h3>
         <button className="btn btn-light">My Info</button>
       </div>
@@ -74,7 +103,14 @@ class ChatHeader extends Component {
 
 class ChatHistory extends Component {
   render() {
-    let historyItems = this.props.conversations.map(c => <ChatHistoryItem key={c.id} conversation={c} /> )
+    let historyItems;
+
+    if(this.props.conversations.length) {
+      historyItems = this.props.conversations.map(c => <ChatHistoryItem key={c.id} conversation={c} /> )
+    } else {
+      historyItems = <h4 className="empty-msg">No Contacts</h4>
+    }
+
     return (
       <div className="chat-history">
         <ul>{historyItems}</ul>
@@ -95,7 +131,7 @@ class ChatConversation extends Component {
       }
 
     } else {
-      messages = <li><h1 className="empty-msg">Select a Conversation</h1></li>;
+      messages = <li><h1 className="empty-msg">Select a Contact</h1></li>;
     }
 
     return (
@@ -105,7 +141,6 @@ class ChatConversation extends Component {
     );
   }
 }
-
 
 class ChatHistoryItem extends Component {
   render() {
@@ -147,6 +182,14 @@ class ChatInput extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  _handleKeyPress = (e) => {
+    if (e.key === 'Enter' && e.target.value.length && !this.props.disabled) {
+      e.preventDefault();
+      this.sendMessage();
+      this.setState({messageInput:""});
+    }
+  }
+
   sendMessage(){
     let eventType = this.props.keyType === 'sym' ? "SendDataMessage" : "SendSynMessage";
     ipcRenderer.send(eventType, this.props.activeKey, this.state.messageInput);
@@ -157,8 +200,8 @@ class ChatInput extends Component {
   render() {
     return (
       <div className="chat-input">
-        <textarea name="messageInput" placeholder="Type a message" value={this.state.messageInput} onChange={this.onChange.bind(this)} />
-        <button className="send-btn btn" onClick={this.sendMessage.bind(this)}>Send</button>
+        <textarea name="messageInput" placeholder="Type a message" value={this.state.messageInput} onChange={this.onChange.bind(this)}  disabled={this.props.disabled} onKeyPress={this._handleKeyPress} />
+        <button className="send-btn btn" onClick={this.sendMessage.bind(this)} disabled={this.props.disabled || !this.state.messageInput}>Send</button>
       </div>
     );
   }

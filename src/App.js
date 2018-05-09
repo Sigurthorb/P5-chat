@@ -4,7 +4,6 @@ import Home from './Home';
 import Create from './Create';
 import Join from './Join';
 import Chat from './Chat';
-import './App.css';
 
 
 class App extends Component {

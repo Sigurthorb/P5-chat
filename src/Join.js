@@ -29,7 +29,7 @@ class Join extends Component {
     ipcRenderer.send("JoinNetwork", params);
     ipcRenderer.on("Network Joined", function(evt, data) {
         console.log("Success!! ", data);
-        ipcRenderer.send("AddSymmetricKey", "thisistherightlengthofkeyforencb"); //This is for testing only. TO DO Remove
+        // ipcRenderer.send("AddSymmetricKey", "thisistherightlengthofkeyforencb"); //This is for testing only. TO DO Remove
         history.push('/Chat');
     });
   }

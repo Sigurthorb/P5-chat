@@ -26,7 +26,7 @@ class Create extends Component {
     ipcRenderer.send("CreateNetwork", params);
     ipcRenderer.on("Network Created", function(evt, data) {
         console.log("Success!! ", data);
-        ipcRenderer.send("AddSymmetricKey", "thisistherightlengthofkeyforenca"); //This is for testing only. TO DO Remove
+        // ipcRenderer.send("AddSymmetricKey", "thisistherightlengthofkeyforenca"); //This is for testing only. TO DO Remove
         history.push('/Chat');
     });
   }
