@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { AddContactModal } from './Modal';
+import { AddContactModal, MyInfoModal } from './Modal';
 
 const electron = window.require('electron');
 const ipcRenderer  = electron.ipcRenderer;
@@ -71,6 +71,14 @@ class Chat extends Component {
     this.setState({addContactShow:false});
   }
 
+  showMyInfo(){
+    this.setState({myInfoShow:true});
+  }
+
+  hideMyInfo(){
+    this.setState({myInfoShow:false});
+  }
+
 
   render() {
     let data = this.state.appData;
@@ -79,11 +87,12 @@ class Chat extends Component {
 
     return (
       <div className="chat">
-        <ChatHeader addContact={this.showAddContact.bind(this)} />
+        <ChatHeader addContact={this.showAddContact.bind(this)} myInfo={this.showMyInfo.bind(this)} />
         <ChatHistory conversations={data}/>
         <ChatConversation conversation={activeConversation} />
         <ChatInput activeKey={activeConversation && activeConversation.key} keyType={activeConversation && activeConversation.keyType} onSend={this.pushMessage.bind(this)} disabled={!activeConversation} />
         <AddContactModal show={this.state.addContactShow} handleClose={this.hideAddContact.bind(this)} addContact={this.pushContact.bind(this)} />
+        <MyInfoModal show={this.state.myInfoShow} handleClose={this.hideMyInfo.bind(this)} user={this.props.user} />
       </div>
     );
   }
@@ -95,7 +104,7 @@ class ChatHeader extends Component {
       <div className="chat-header">
         <button onClick={this.props.addContact} className="btn btn-light">Add Contact</button>
         <h3 className="logo"><em>P5</em> Chat</h3>
-        <button className="btn btn-light">My Info</button>
+        <button onClick={this.props.myInfo} className="btn btn-light">My Info</button>
       </div>
     );
   }

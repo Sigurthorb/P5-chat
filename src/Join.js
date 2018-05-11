@@ -13,6 +13,7 @@ class Join extends Component {
 
   joinNetwork(e){
     e.preventDefault();
+    let self = this;
     let history = this.props.history;
     let params = {
       nodeAddress:this.state.p5NodeAddress,
@@ -28,8 +29,8 @@ class Join extends Component {
 
     ipcRenderer.send("JoinNetwork", params);
     ipcRenderer.on("Network Joined", function(evt, data) {
-        console.log("Success!! ", data);
-        // ipcRenderer.send("AddSymmetricKey", "thisistherightlengthofkeyforencb"); //This is for testing only. TO DO Remove
+        let user = Object.assign(data, self.state);
+        self.props.onUserChange(user);
         history.push('/Chat');
     });
   }

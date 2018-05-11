@@ -201,6 +201,12 @@ header h2 {
 	box-shadow:none;
 }
 
+.btn-light:focus {
+	color:#333A42;
+	outline:0;
+	box-shadow:none;
+}
+
 .chat {
 	position: absolute;
 	top:0;
@@ -432,7 +438,12 @@ header h2 {
 	margin:0 5%;
 }
 
-.add-contact-modal .modal-footer {
+.my-info-modal > .modal-content {
+	width:80%;
+	margin:0 10%;
+}
+
+.modal-footer {
 	padding-top:0;
 }
 
@@ -474,6 +485,12 @@ header h2 {
 	height:170px;
 	font-size: 12px;
 	font-family: serif;
+}
+
+.my-info-modal .key {
+	font-family: serif;
+	font-size: 12px;
+	margin:0;
 }
 
 

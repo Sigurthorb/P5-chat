@@ -72,3 +72,68 @@ export class AddContactModal extends Component {
 		);
 	}
 }
+
+export class MyInfoModal extends Component {
+	render(){
+		let user = this.props.user;
+
+		return(
+	        <Modal show={this.props.show} onHide={this.props.handleClose} dialogClassName="my-info-modal">
+	          <Modal.Header closeButton>
+	            <Modal.Title>My Info</Modal.Title>
+	          </Modal.Header>
+	          <Modal.Body>
+		          <table className="formTable">
+		            <tbody>
+		              <tr>
+		                <td>
+		                  <label>Join Address</label>
+		                </td>
+		                <td>
+		                  <strong>{user.ip} : {user.joinPort}</strong>  
+		                </td>
+		              </tr>
+		              <tr>
+		                <td>
+		                  <label>UDP Ports</label>
+		                </td>
+		                <td>
+		                	<strong>{user.incomingPort}, {user.outgoingPort}</strong>
+		                </td>
+		              </tr>
+		              <tr>
+		                <td>
+		                  <label>Security Range</label>
+		                </td>
+		                <td>
+		                	<strong>{user.minNodes} - {user.maxNodes}</strong>
+		                </td>
+		              </tr>
+		              <tr>
+		                <td>
+		                  <label>Comm. Channel</label>
+		                </td>
+		                <td>
+		                	<strong>{ user.channel === '' ? 'root' : user.channel }</strong>
+		                </td>
+		              </tr>
+		              <tr>
+		                <td>
+		                  <label>Topology Server</label>
+		                </td>
+		                <td>
+		                	<a href={"http://" + user.topologyServer} target="_blank"><strong>{user.topologyServer}</strong></a>
+		                </td>
+		              </tr>
+		            </tbody>
+		          </table>
+		          <br/>
+                  <p className="key">{user.key}</p>
+	          </Modal.Body>
+	          <Modal.Footer>
+	            <button className="btn" onClick={this.props.handleClose}>OK</button>
+	          </Modal.Footer>
+	        </Modal>
+		);
+	}
+}

@@ -49,6 +49,7 @@ if (handleStartupEvent()) {
 function ExitFromTray() {
   // TODO: exit service correctly
   // TODO: close window
+  // TODO: Add node leave
   windowModule.close();
   app.quit();
 }

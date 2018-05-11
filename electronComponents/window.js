@@ -46,6 +46,11 @@ function createWindow (showWindow) {
   mainWindow.webContents.on("did-finish-load", function() {
     sendReady = true;
   });
+
+  mainWindow.webContents.on('new-window', function(event, url){
+    event.preventDefault();
+    require('electron').shell.openExternal(url);
+  });
 }
 
 function show() {

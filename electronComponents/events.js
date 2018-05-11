@@ -59,9 +59,10 @@ module.exports = function(ipcMain, dialog, _windowModule) {
       console.log("Joining Network...");
       p5.join(params.nodeAddress, params.nodePort, params.minNodes, params.maxNodes, params.opts).then(p5server => {
         server = p5server;
-        send("Network Joined", {key:server.key, channel:server.channel});
-        console.log("Network Joined");
-        server.start();
+        server.start().then((myIp) => {
+          send("Network Joined", {key:server.key, channel:server.channel, ip:myIp, topologyServer:server.getTopologyServer()});
+          console.log("Network Joined");
+        });
         startListen(server);
       }).catch(err => {
         console.log("Could not create server...");
@@ -75,9 +76,10 @@ module.exports = function(ipcMain, dialog, _windowModule) {
       console.log("Creating Network...");
       p5.create([params.server], params.opts).then(p5server => {
         server = p5server;
-        send("Network Created", {key:server.key, channel:server.channel});
-        console.log("Network Created");
-        server.start();
+        server.start().then((myIp) => {
+          send("Network Created", {key:server.key, channel:server.channel, ip:myIp});
+          console.log("Network Created");
+        });
         startListen(server);
       }).catch(err => {
         console.log("Could not create server...");

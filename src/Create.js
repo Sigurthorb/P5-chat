@@ -8,11 +8,12 @@ const ipcRenderer  = electron.ipcRenderer;
 class Create extends Component {
   constructor(props){
     super(props);
-    this.state = {topologyServer:'p5-topology.herokuapp.com', incomingPort:3333, outgoingPort:3444, joinPort:3555};
+    this.state = {topologyServer:'p5-topology.herokuapp.com', incomingPort:3333, outgoingPort:3444, joinPort:3555, minNodes:0, maxNodes:100};
   }
 
   createNetwork(e){
     e.preventDefault();
+    let self = this;
     let history = this.props.history;
     let params = {
       server:this.state.topologyServer,
@@ -25,9 +26,9 @@ class Create extends Component {
 
     ipcRenderer.send("CreateNetwork", params);
     ipcRenderer.on("Network Created", function(evt, data) {
-        console.log("Success!! ", data);
-        // ipcRenderer.send("AddSymmetricKey", "thisistherightlengthofkeyforenca"); //This is for testing only. TO DO Remove
-        history.push('/Chat');
+      let user = Object.assign(data, self.state);
+      self.props.onUserChange(user);
+      history.push('/Chat');
     });
   }
 
