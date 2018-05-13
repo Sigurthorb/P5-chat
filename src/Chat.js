@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import moment from 'moment';
 import { AddContactModal, MyInfoModal, ParentLeftModal } from './Modal';
 
 const electron = window.require('electron');
@@ -35,17 +36,17 @@ class Chat extends Component {
 
     ipcRenderer.on("dataMessage", function(evt, payload) {
         console.log("New Message ", payload.data);
-        self.pushMessage(payload.data, false, "5/7/18 @ 1:28pm", payload.symmetricKey); //TO DO, use real date timestamp
+        self.pushMessage(payload.data, false, payload.symmetricKey);
     });
   }
 
-  pushMessage(newMsg, sent, timestamp, key){
+  pushMessage(newMsg, sent, key){
     this.setState((state, props) => {
       let conversationId = key ? findIdxBykey(state.appData, key) : props.match.params.id;
       let newData = JSON.parse(JSON.stringify(state.appData)); //Deep Clone the Object
       let messages = newData[conversationId].messages;
 
-      messages.push({message:newMsg, sent:sent, timestamp:timestamp});
+      messages.push({message:newMsg, sent:sent, timestamp:moment().valueOf()});
       localStorage.appData = JSON.stringify(newData);
       return { appData:newData };
     });
@@ -160,10 +161,12 @@ class ChatHistoryItem extends Component {
   render() {
     let conv = this.props.conversation;
     let lastMsg = conv.messages[conv.messages.length-1] || {timestamp:'', message:''};
+    let timestamp = moment(lastMsg.timestamp);
+    let timeFormat = timestamp.isSame(moment(), 'day') ? 'h:mm a' : 'MM/DD/YY';
     return (
       <li className="chat-history-item">
         <NavLink to={'/Chat/' + conv.id}>
-          <p className="title"><strong>{conv.alias || conv.key}</strong><em>{lastMsg.timestamp}</em></p>
+          <p className="title"><strong>{conv.alias || conv.key}</strong><em>{ timestamp.format(timeFormat) }</em></p>
           <p className="subtitle">{lastMsg.message}</p>
         </NavLink>
       </li>
@@ -174,12 +177,14 @@ class ChatHistoryItem extends Component {
 class ChatMessageItem extends Component {
   render() {
     let msg = this.props.message;
+    let timestamp = moment(msg.timestamp);
+    let timeFormat = timestamp.isSame(moment(), 'day') ? 'h:mm a' : 'MM/DD/YY @ h:mm a';
 
     return (
       <li className={"chat-message-item " + (msg.sent ? "right" : "left")}>
         <div>
           <p className="conversation">{msg.message}</p>
-          <p className="timestamp">{msg.timestamp}</p>
+          <p className="timestamp">{ timestamp.format(timeFormat) }</p>
         </div>
       </li>
     );
@@ -207,7 +212,7 @@ class ChatInput extends Component {
   sendMessage(){
     let eventType = this.props.keyType === 'sym' ? "SendDataMessage" : "SendSynMessage";
     ipcRenderer.send(eventType, this.props.activeKey, this.state.messageInput);
-    this.props.onSend(this.state.messageInput, true, "5/7/18 @ 1:28pm"); //TO DO, use real date timestamp
+    this.props.onSend(this.state.messageInput, true);
     this.setState({messageInput:""});
   }
 
