@@ -31,7 +31,7 @@ function createWindow (showWindow) {
     preload: path.join(__dirname, "preload.js")
   }});
 
-  // development tool window
+  //Development tool window
   mainWindow.webContents.openDevTools()
   mainWindow.loadURL(startUrl);
 

@@ -74,11 +74,28 @@ export class AddContactModal extends Component {
 }
 
 export class MyInfoModal extends Component {
+	constructor(props){
+		super(props);
+		this.state = {keyCopied:false};
+	}
+
+
+	copyKeyToClipboard() {
+	  electron.clipboard.writeText(this.props.user.key);
+	  this.setState({ keyCopied:true });
+	  console.log('Key copied!');
+	}
+
+	closeModal(){
+		this.setState({ keyCopied:false });
+		this.props.handleClose();
+	}
+
 	render(){
 		let user = this.props.user;
 
 		return(
-	        <Modal show={this.props.show} onHide={this.props.handleClose} dialogClassName="my-info-modal">
+	        <Modal show={this.props.show} onHide={this.closeModal.bind(this)} dialogClassName="my-info-modal">
 	          <Modal.Header closeButton>
 	            <Modal.Title>My Info</Modal.Title>
 	          </Modal.Header>
@@ -125,13 +142,16 @@ export class MyInfoModal extends Component {
 		                	<a href={"http://" + user.topologyServer} target="_blank"><strong>{user.topologyServer}</strong></a>
 		                </td>
 		              </tr>
+		              <tr>
+		              	<td>Public Key</td>
+		              	<td><button className="btn" onClick={this.copyKeyToClipboard.bind(this)}>Copy Key</button></td>
+		              </tr>
 		            </tbody>
 		          </table>
-		          <br/>
-                  <p className="key">{user.key}</p>
+		          {this.state.keyCopied ? (<p className="text-center"><strong>Key copied to your clipboard</strong></p>) : (<br/>)}
 	          </Modal.Body>
 	          <Modal.Footer>
-	            <button className="btn" onClick={this.props.handleClose}>OK</button>
+	            <button className="btn" onClick={this.closeModal.bind(this)}>OK</button>
 	          </Modal.Footer>
 	        </Modal>
 		);

@@ -166,7 +166,7 @@ class ChatHistoryItem extends Component {
     return (
       <li className="chat-history-item">
         <NavLink to={'/Chat/' + conv.id}>
-          <p className="title"><strong>{conv.alias || conv.key}</strong><em>{ timestamp.format(timeFormat) }</em></p>
+          <p className="title"><strong>{conv.alias || conv.key}</strong><em>{ lastMsg.timestamp && timestamp.format(timeFormat)}</em></p>
           <p className="subtitle">{lastMsg.message}</p>
         </NavLink>
       </li>
