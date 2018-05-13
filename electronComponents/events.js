@@ -10,8 +10,6 @@ let send = function(topic, data) {
   }
 };
 
-let startListen = function(server) {
-  server.on("synMessage", function(data) {
 let startListen = function(srv) {
   srv.on("synMessage", function(data) {
     server.addSymmetricKey(data.symmetricKey);
@@ -34,7 +32,7 @@ let startListen = function(srv) {
 
 module.exports = function(ipcMain, dialog, _windowModule) {
   windowModule = _windowModule;
-  p5 = require('../../P5');
+  p5 = require('p5-node');
 
   ipcMain.on("SendSynMessage", function(evt, publicKey, channel) {
     if(server) {
