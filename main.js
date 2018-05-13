@@ -1,4 +1,4 @@
-const {app, Menu, Tray, dialog, ipcMain, BrowserWindow} = require('electron');
+const {app, Menu, Tray, dialog, ipcMain, ipcRenderer, BrowserWindow} = require('electron');
 
 /*
 if(require('electron-squirrel-startup')) return;
@@ -47,11 +47,14 @@ if (handleStartupEvent()) {
 }
 */
 function ExitFromTray() {
-  // TODO: exit service correctly
-  // TODO: close window
-  // TODO: Add node leave
-  windowModule.close();
-  app.quit();
+  console.log('Stop Everything!');
+  let server = eventModule.getServer()
+  if(server) {
+    server.stop().then(() => {
+      windowModule.close();
+      app.quit();
+    });
+  }
 }
 
 let windowModule = require("./electronComponents/window.js")(BrowserWindow);

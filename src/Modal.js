@@ -137,3 +137,36 @@ export class MyInfoModal extends Component {
 		);
 	}
 }
+
+
+export class ParentLeftModal extends Component {
+	constructor(props){
+    	super(props);
+    	this.state = {show:false};
+
+    	ipcRenderer.on("parentLeft", () => {
+    		this.setState({show:true});
+    	});
+  	}
+
+  	closeModal(){
+  		this.setState({show:false});
+  		this.props.handleClose();
+  	}
+
+	render(){
+		return(
+	        <Modal show={this.state.show} onHide={this.closeModal.bind(this)} dialogClassName="parent-left-modal">
+	          <Modal.Header closeButton>
+	            <Modal.Title>Parent Node Left</Modal.Title>
+	          </Modal.Header>
+	          <Modal.Body>
+	          	<p>You must rejoin the network because your parent node has left.</p> 
+	          </Modal.Body>
+	          <Modal.Footer>
+	            <button className="btn" onClick={this.closeModal.bind(this)}>Rejoin</button>
+	          </Modal.Footer>
+	        </Modal>
+		);
+	}
+}

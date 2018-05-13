@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { AddContactModal, MyInfoModal } from './Modal';
+import { AddContactModal, MyInfoModal, ParentLeftModal } from './Modal';
 
 const electron = window.require('electron');
 const ipcRenderer  = electron.ipcRenderer;
@@ -79,6 +79,10 @@ class Chat extends Component {
     this.setState({myInfoShow:false});
   }
 
+  rejoin(){
+    this.props.history.push('/Join');
+  }
+
 
   render() {
     let data = this.state.appData;
@@ -93,6 +97,7 @@ class Chat extends Component {
         <ChatInput activeKey={activeConversation && activeConversation.key} keyType={activeConversation && activeConversation.keyType} onSend={this.pushMessage.bind(this)} disabled={!activeConversation} />
         <AddContactModal show={this.state.addContactShow} handleClose={this.hideAddContact.bind(this)} addContact={this.pushContact.bind(this)} />
         <MyInfoModal show={this.state.myInfoShow} handleClose={this.hideMyInfo.bind(this)} user={this.props.user} />
+        <ParentLeftModal handleClose={this.rejoin.bind(this)} />
       </div>
     );
   }

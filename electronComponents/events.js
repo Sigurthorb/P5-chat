@@ -12,21 +12,29 @@ let send = function(topic, data) {
 
 let startListen = function(server) {
   server.on("synMessage", function(data) {
+let startListen = function(srv) {
+  srv.on("synMessage", function(data) {
     server.addSymmetricKey(data.symmetricKey);
     send("synMessage", data);
   });
 
-  server.on("dataMessage", function(payload) {
+  srv.on("dataMessage", function(payload) {
     payload.data = payload.data.toString()
     console.log("newMsg: ", payload);
     send("dataMessage", payload);
+  });
+
+  srv.on("parentLeft", function() {
+    console.log('Parent Left. Set Server to null');
+    server = null;
+    console.log(server);
+    send("parentLeft");
   });
 }
 
 module.exports = function(ipcMain, dialog, _windowModule) {
   windowModule = _windowModule;
-  p5 = require('p5-node');
-  let server = null;
+  p5 = require('../../P5');
 
   ipcMain.on("SendSynMessage", function(evt, publicKey, channel) {
     if(server) {
@@ -88,14 +96,9 @@ module.exports = function(ipcMain, dialog, _windowModule) {
     }
   });
 
-  ipcMain.on("LeaveNetwork", function() {
-    if(server) {
-      server.leave();
-      server = null;
-    }
-  });
+  function getServer() {
+    return server;
+  } 
 
- 
-
-  return {on: ipcMain.on, send: send};
+  return {on: ipcMain.on, send: send, getServer: getServer};
 }
