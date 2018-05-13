@@ -25,7 +25,7 @@ export class AddContactModal extends Component {
 	    	ipcRenderer.send("SendSynMessage", this.state.key, this.state.channel);
 	    	ipcRenderer.on("SynMessageSent", function(evt, payload){
 	    		newContact.key = payload.key;
-
+	    		self.setState({ key: '' });
 	    		self.props.addContact(newContact);
 	    		self.props.handleClose();
 	    	});

@@ -18,9 +18,9 @@ class Create extends Component {
     let params = {
       server:this.state.topologyServer,
       opts:{
-        sendPort:this.state.incomingPort,
-        receivePort:this.state.outgoingPort,
-        joinPort:this.state.joinPort
+        sendPort:parseInt(this.state.incomingPort),
+        receivePort:parseInt(this.state.outgoingPort),
+        joinPort:parseInt(this.state.joinPort)
       }
     };
 

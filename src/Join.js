@@ -21,9 +21,9 @@ class Join extends Component {
       minNodes:this.state.minNodes,
       maxNodes:this.state.maxNodes,
       opts:{
-        sendPort:this.state.incomingPort,
-        receivePort:this.state.outgoingPort,
-        joinPort:this.state.joinPort
+        sendPort:parseInt(this.state.incomingPort),
+        receivePort:parseInt(this.state.outgoingPort),
+        joinPort:parseInt(this.state.joinPort)
       }
     };
 
