@@ -54,6 +54,9 @@ function ExitFromTray() {
       windowModule.close();
       app.quit();
     });
+  } else {
+    windowModule.close();
+    app.quit();
   }
 }
 
