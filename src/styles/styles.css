@@ -309,7 +309,7 @@ header h2 {
 }
 
 .chat-history-item .title em {
-	font-size:12px;
+	font-size:14px;
 	font-style: normal;
 	float:right;
 	margin-top:5px;
@@ -317,7 +317,7 @@ header h2 {
 }
 
 .chat-history-item .subtitle {
-	color:#A6A5A1;
+	color:#888;
 	font-size:14px;
 	font-weight:200;
 	font-style: italic;
