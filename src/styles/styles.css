@@ -331,6 +331,7 @@ header h2 {
 	background-color:#e9e2dd; /* DARK WHITE */
 	position: absolute;
 	right:0;
+	overflow-y: auto;
 
 }
 

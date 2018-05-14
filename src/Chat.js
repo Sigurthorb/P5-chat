@@ -135,6 +135,16 @@ class ChatHistory extends Component {
 }
 
 class ChatConversation extends Component {
+  componentDidMount(){
+    let objDiv = document.getElementById("chat-conversation");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+
+  componentDidUpdate(){
+    let objDiv = document.getElementById("chat-conversation");
+    objDiv.scrollTop = objDiv.scrollHeight;
+  }
+
   render() {
     let messages;
 
@@ -150,7 +160,7 @@ class ChatConversation extends Component {
     }
 
     return (
-      <div className="chat-conversation">
+      <div id="chat-conversation" className="chat-conversation">
         <ul>{messages}</ul>
       </div>
     );
