@@ -321,6 +321,8 @@ header h2 {
 	font-size:14px;
 	font-weight:200;
 	font-style: italic;
+	text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .chat-conversation {
@@ -376,6 +378,8 @@ header h2 {
 
 .chat-message-item p {
 	margin:0;
+	word-break: break-all;
+	text-align: left;
 }
 
 
