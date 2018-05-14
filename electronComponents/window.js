@@ -32,7 +32,7 @@ function createWindow (showWindow) {
   }});
 
   //Development tool window
-  mainWindow.webContents.openDevTools()
+  if(process.env.ELECTRON_START_URL) mainWindow.webContents.openDevTools()
   mainWindow.loadURL(startUrl);
 
   //This is called when the main window is closing
