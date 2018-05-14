@@ -67,7 +67,8 @@ function show() {
 function close() {
   return new Promise((resolve, reject) => {
     //clear localStorage
-    mainWindow.webContents.executeJavaScript('localStorage.clear()');
+    mainWindow.webContents.executeJavaScript('localStorage.removeItem("appUser")');
+    //mainWindow.webContents.executeJavaScript('localStorage.clear()');
     isQuitting = true;
     resolve();
   });

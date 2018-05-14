@@ -5,7 +5,7 @@ import Header from './Header';
 class Home extends Component {
 
   render() {
-    if (localStorage.appData) {
+    if (localStorage.appUser) {
       return <Redirect to='/Chat' />
     }
 
