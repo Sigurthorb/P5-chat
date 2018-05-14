@@ -7,6 +7,8 @@ let isQuitting = false;
 const path = require('path')
 const url = require('url')
 const startUrl = process.env.ELECTRON_START_URL || url.format({ pathname: path.join(__dirname, '/../build/index.html'), protocol: 'file:', slashes: true })
+const { Menu, MenuItem } = require('electron')
+const menu = new Menu();
 
 let config = require("./config.js");
 
@@ -34,6 +36,27 @@ function createWindow (showWindow) {
   //Development tool window
   if(process.env.ELECTRON_START_URL) mainWindow.webContents.openDevTools()
   mainWindow.loadURL(startUrl);
+
+    // Create the Application's main menu
+    let template = [{
+      label: "Application",
+      submenu: [
+          { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+          { type: "separator" },
+          { label: "Quit", accelerator: "Command+Q", click: ExitFromTray }
+      ]}, {
+      label: "Edit",
+      submenu: [
+          { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+          { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+          { type: "separator" },
+          { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+          { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+          { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+          { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+    ]}];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
   //This is called when the main window is closing
   mainWindow.on('close', function (event) {
@@ -88,8 +111,9 @@ function getMainWindow() {
   return mainWindow;
 }
 
-module.exports = function(_BrowserWindow) {
+module.exports = function(_BrowserWindow, _ExitFromTray) {
   BrowserWindow = _BrowserWindow;
+  ExitFromTray = _ExitFromTray
 
   return {
     createWindow: createWindow,

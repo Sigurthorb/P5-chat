@@ -1,52 +1,8 @@
-const {app, Menu, Tray, dialog, ipcMain, ipcRenderer, BrowserWindow} = require('electron');
+const { app, Menu, Tray, dialog, ipcMain, ipcRenderer, BrowserWindow } = require('electron');
 let QuittingApp = false;
-/*
-if(require('electron-squirrel-startup')) return;
 
-let handleStartupEvent = function() {
-  if(process.playform !== 'win32') {
-    return false;
-  }
-
-  let squirrelCommand = process.argv[1];
-
-  switch (squirrelCommand) {
-    case '--squirrel-install':
-    case '--squirrel-updated':
-
-      // Optionally do things such as:
-      //
-      // - Install desktop and start menu shortcuts
-      // - Add your .exe to the PATH
-      // - Write to the registry for things like file associations and
-      //   explorer context menus
-
-      // Always quit when done
-      app.quit();
-
-      return true;
-    case '--squirrel-uninstall':
-      // Undo anything you did in the --squirrel-install and
-      // --squirrel-updated handlers
-
-      // Always quit when done
-      app.quit();
-
-      return true;
-    case '--squirrel-obsolete':
-      // This is called on the outgoing version of your app before
-      // we update to the new version - it's the opposite of
-      // --squirrel-updated
-      app.quit();
-      return true;
-  }
-}
-
-if (handleStartupEvent()) {
-  return;
-}
-*/
 console.log(process.versions);
+
 function ExitFromTray() {
   if(!QuittingApp) {
     QuittingApp = true;
@@ -62,7 +18,7 @@ function ExitFromTray() {
   } 
 }
 
-let windowModule = require("./electronComponents/window.js")(BrowserWindow);
+let windowModule = require("./electronComponents/window.js")(BrowserWindow, ExitFromTray);
 let eventModule = require("./electronComponents/events.js")(ipcMain, dialog, windowModule);
 let trayModule = require("./electronComponents/tray.js")(Tray, Menu, windowModule, ExitFromTray);
 
