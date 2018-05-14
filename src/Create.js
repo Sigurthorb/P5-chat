@@ -8,7 +8,7 @@ const ipcRenderer  = electron.ipcRenderer;
 class Create extends Component {
   constructor(props){
     super(props);
-    this.state = {topologyServer:'p5-topology.herokuapp.com', incomingPort:3333, outgoingPort:3444, joinPort:3555, minNodes:0, maxNodes:100};
+    this.state = localStorage.appCreate ? JSON.parse(localStorage.appCreate) : {topologyServer:'p5-topology.herokuapp.com', incomingPort:3333, outgoingPort:3444, joinPort:3555, minNodes:0, maxNodes:100};
   }
 
   createNetwork(e){
@@ -30,6 +30,9 @@ class Create extends Component {
       self.props.onUserChange(user);
       history.push('/Chat');
     });
+
+    //Save form settings for next time
+    localStorage.appCreate = JSON.stringify(this.state);
   }
 
   onChange(e){

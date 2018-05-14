@@ -8,7 +8,7 @@ const ipcRenderer  = electron.ipcRenderer;
 class Join extends Component {
   constructor(props){
     super(props);
-    this.state = {p5NodeAddress:'192.168.1.2', p5NodePort:3555, incomingPort:2333, outgoingPort:2444, joinPort:2555, minNodes:0, maxNodes:100};
+    this.state = localStorage.appJoin ? JSON.parse(localStorage.appJoin) : {p5NodeAddress:'192.168.1.2', p5NodePort:3555, incomingPort:2333, outgoingPort:2444, joinPort:2555, minNodes:0, maxNodes:100};
   }
 
   joinNetwork(e){
@@ -33,6 +33,9 @@ class Join extends Component {
         self.props.onUserChange(user);
         history.push('/Chat');
     });
+
+    //Save form settings for next time
+    localStorage.appJoin = JSON.stringify(this.state);
   }
 
   onChange(e){
