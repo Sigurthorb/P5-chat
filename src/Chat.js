@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import { AddContactModal, MyInfoModal, ParentLeftModal } from './Modal';
 
@@ -90,6 +90,10 @@ class Chat extends Component {
     let data = this.state.appData;
     //TO DO, search for the object with the correct id (id may not always be the index)
     let activeConversation = this.props.match.params.id ? data[this.props.match.params.id] : null;
+
+    if (!localStorage.appUser) {
+      return <Redirect to='/' />
+    }
 
     return (
       <div className="chat">
