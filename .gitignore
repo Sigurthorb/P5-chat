@@ -1,6 +1,8 @@
 node_modules
 dist
 build/src
+build
+P5Chat-darwin-x64
 settings.json
 .jscs.json
 package-lock.json

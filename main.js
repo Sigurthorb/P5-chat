@@ -1,5 +1,5 @@
 const {app, Menu, Tray, dialog, ipcMain, ipcRenderer, BrowserWindow} = require('electron');
-
+let QuittingApp = false;
 /*
 if(require('electron-squirrel-startup')) return;
 
@@ -46,18 +46,22 @@ if (handleStartupEvent()) {
   return;
 }
 */
+console.log(process.versions);
 function ExitFromTray() {
-  console.log('Stop Everything!');
-  let server = eventModule.getServer()
-  if(server) {
-    server.stop().then(() => {
+  if(!QuittingApp) {
+    QuittingApp = true;
+    let server = eventModule.getServer();
+
+    if(server) {
+      server.stop().then(() => {
+        windowModule.close();
+        app.quit();
+      });
+    } else {
       windowModule.close();
       app.quit();
-    });
-  } else {
-    windowModule.close();
-    app.quit();
-  }
+    }   
+  } 
 }
 
 let windowModule = require("./electronComponents/window.js")(BrowserWindow);
@@ -79,6 +83,8 @@ app.on('ready', () => {
 app.on('before-quit', function () { 
   // On OS X, quit the app when the user quits explicitly with Cmd + Q
   if (process.platform === 'darwin') {
+
+      console.log('Stop Everything!');
     ExitFromTray();
   }
 });
