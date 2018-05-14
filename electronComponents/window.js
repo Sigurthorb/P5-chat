@@ -65,9 +65,12 @@ function show() {
 
 //This is called when the app is quitting
 function close() {
-  //clear localStorage
-  mainWindow.webContents.executeJavaScript('localStorage.clear()');
-  isQuitting = true;
+  return new Promise((resolve, reject) => {
+    //clear localStorage
+    mainWindow.webContents.executeJavaScript('localStorage.clear()');
+    isQuitting = true;
+    resolve();
+  });
 }
 
 function hide() {

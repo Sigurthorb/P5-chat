@@ -54,12 +54,10 @@ function ExitFromTray() {
 
     if(server) {
       server.stop().then(() => {
-        windowModule.close();
-        app.quit();
+        windowModule.close().then(app.quit);
       });
     } else {
-      windowModule.close();
-      app.quit();
+      windowModule.close().then(app.quit);
     }   
   } 
 }
