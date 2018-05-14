@@ -53,10 +53,11 @@ class Chat extends Component {
   }
 
   pushContact(newContact){
+    //Add key to db storage
+    ipcRenderer.send("AddSymmetricKey", newContact.key);
     this.setState((state, props) => {
       newContact.id = state.appData.length;
       let newData = JSON.parse(JSON.stringify(state.appData)); //Deep Clone the Object
-
       newData.push(newContact);
       props.history.push('/Chat/' + newContact.id);
       localStorage.appData = JSON.stringify(newData);

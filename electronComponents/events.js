@@ -12,7 +12,6 @@ let send = function(topic, data) {
 
 let startListen = function(srv) {
   srv.on("synMessage", function(data) {
-    server.addSymmetricKey(data.symmetricKey);
     send("synMessage", data);
   });
 
