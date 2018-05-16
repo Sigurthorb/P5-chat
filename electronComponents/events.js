@@ -40,7 +40,10 @@ module.exports = function(ipcMain, dialog, _windowModule) {
       if(channel) opts.channel = channel;
 
       let newSymmetricKey = server.sendSynMsg(publicKey, new Buffer(''), opts);
-      send("SynMessageSent", {key:newSymmetricKey});
+      if(newSymmetricKey) {
+        send("SynMessageSent", {key:newSymmetricKey});
+      }
+
     }
   });
 
