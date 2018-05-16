@@ -503,4 +503,13 @@ header h2 {
 	margin:0;
 }
 
+.punch-line {
+	text-align: center;
+    margin: 10px 0;
+    font-size: 14px;
+    font-weight: 200;
+    color: #888;
+    font-style: italic;
+}
+
 

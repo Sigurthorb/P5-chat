@@ -166,6 +166,7 @@ class ChatConversation extends Component {
 
     return (
       <div id="chat-conversation" className="chat-conversation">
+        <p className="punch-line">Good thing about UDP jokes is I don't care if you get them or not</p>
         <ul>{messages}</ul>
       </div>
     );
