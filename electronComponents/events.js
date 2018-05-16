@@ -62,6 +62,14 @@ module.exports = function(ipcMain, dialog, _windowModule) {
     }
   });
 
+  ipcMain.on("AddSymmetricKeys", function(evt, keys){
+    if(server){
+      for(let key in keys){
+        server.addSymmetricKey(key);
+      }
+    }
+  });
+
   ipcMain.on("JoinNetwork", function(evt, params) {
     if(!server) {
       console.log("Joining Network...");

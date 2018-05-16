@@ -19,6 +19,9 @@ class Chat extends Component {
     super(props);
     let self = this;
     let data = localStorage.appData ? JSON.parse(localStorage.appData) : [];
+    let keys = data.map(c => c.key);
+    //Set keys on the db
+    ipcRenderer.send("AddSymmetricKeys", keys);
 
     this.state = {
       appData:data,
