@@ -64,6 +64,7 @@ class Chat extends Component {
       let messages = newData[conversationId].messages;
 
       messages.push({message:newMsg, sent:sent, timestamp:moment().valueOf()});
+      newData.sort((a,b) => { b.messages[b.messages.length-1].timestamp - a.messages[a.messages.length-1].timestamp });
       localStorage.appData = JSON.stringify(newData);
       return { appData:newData };
     });
