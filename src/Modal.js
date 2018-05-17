@@ -21,7 +21,6 @@ export class AddContactModal extends Component {
 		if(this.state.alias) newContact.alias = this.state.alias;
 
 		if(this.state.keyType === 'asym') {
-			console.log(this.state.key);
 	    	ipcRenderer.send("SendSynMessage", this.state.key, this.state.channel);
 	    	ipcRenderer.on("SynMessageSent", function(evt, payload){
 	    		newContact.key = payload.key;
@@ -31,6 +30,7 @@ export class AddContactModal extends Component {
 	    	});
 		} else {
 	    	newContact.key = this.state.key;
+	    	self.setState({ key: '' });
 	    	this.props.addContact(newContact);
 	    	this.props.handleClose();
 		}
