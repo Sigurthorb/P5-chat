@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
+import { Glyphicon } from 'react-bootstrap';
 import moment from 'moment';
-import { AddContactModal, MyInfoModal, ParentLeftModal } from './Modal';
+import { AddContactModal, ContactDetailsModal, MyInfoModal, ParentLeftModal } from './Modal';
+import Dispatcher from "./Dispatcher";
 
 const electron = window.require('electron');
 const ipcRenderer  = electron.ipcRenderer;
@@ -29,6 +31,8 @@ class Chat extends Component {
         // {id:1, key:"thisistherightlengthofkeyforenca", keyType:"sym",  channel:"", messages:[{timestamp:"4/26/18 @ 4:30pm", message:"Looking for a complication", sent:false}]},
         // {id:2, key:"thisistherightlengthofkeyforencb", keyType:"sym",  channel:"", messages:[]}
       addContactShow:false,
+      contactDetailsShow:false,
+      activeContact:{},
       myInfoShow:false
     };
 
@@ -40,6 +44,16 @@ class Chat extends Component {
     ipcRenderer.on("dataMessage", function(evt, payload) {
         console.log("New Message ", payload.data);
         self.pushMessage(payload.data, false, payload.symmetricKey);
+    });
+  }
+
+  componentDidMount(){
+    Dispatcher.register(e => {
+      switch(e.actionType) {
+        case 'show-contact-details':
+          this.setState({contactDetailsShow:true, activeContact:e.payload});
+          break;
+      }
     });
   }
 
@@ -68,12 +82,43 @@ class Chat extends Component {
     });
   }
 
+  pullContact(contact){
+    ipcRenderer.send("RemoveSymmetricKey", contact.key);
+    this.setState((state, props) => {
+      let newData = JSON.parse(JSON.stringify(state.appData)); //Deep Clone the Object
+      let idx = findIdxBykey(newData, state.activeContact.key);
+      if(idx > -1){
+        newData.splice(idx, 1);
+      }
+      localStorage.appData = JSON.stringify(newData);
+      return { appData:newData, contactDetailsShow:false };
+    });
+  }
+
+  updateContact(contact){
+     this.setState((state, props) => {
+      let newData = JSON.parse(JSON.stringify(state.appData)); //Deep Clone the Object
+      let idx = findIdxBykey(newData, state.activeContact.key);
+      if(idx > -1){
+        if(contact.alias) newData[idx].alias = contact.alias;
+        if(contact.channel) newData[idx].alias = contact.channel;
+      }
+      localStorage.appData = JSON.stringify(newData);
+      return { appData:newData, contactDetailsShow:false };
+    });
+
+  }
+
   showAddContact(){
     this.setState({addContactShow:true});
   }
 
   hideAddContact(){
     this.setState({addContactShow:false});
+  }
+
+  hideContactDetails(){
+    this.setState({contactDetailsShow:false});
   }
 
   showMyInfo(){
@@ -101,10 +146,11 @@ class Chat extends Component {
     return (
       <div className="chat">
         <ChatHeader addContact={this.showAddContact.bind(this)} myInfo={this.showMyInfo.bind(this)} />
-        <ChatHistory conversations={data}/>
+        <ChatHistory conversations={data} />
         <ChatConversation conversation={activeConversation} />
         <ChatInput activeKey={activeConversation && activeConversation.key} keyType={activeConversation && activeConversation.keyType} onSend={this.pushMessage.bind(this)} disabled={!activeConversation} />
         <AddContactModal show={this.state.addContactShow} handleClose={this.hideAddContact.bind(this)} addContact={this.pushContact.bind(this)} />
+        <ContactDetailsModal show={this.state.contactDetailsShow} handleClose={this.hideContactDetails.bind(this)} blockContact={this.pullContact.bind(this)} saveContact={this.updateContact.bind(this)} contact={this.state.activeContact} />
         <MyInfoModal show={this.state.myInfoShow} handleClose={this.hideMyInfo.bind(this)} user={this.props.user} />
         <ParentLeftModal handleClose={this.rejoin.bind(this)} />
       </div>
@@ -177,6 +223,14 @@ class ChatConversation extends Component {
 }
 
 class ChatHistoryItem extends Component {
+  showContact(evt){
+      evt.preventDefault();
+      Dispatcher.dispatch({
+          actionType: 'show-contact-details',
+          payload: this.props.conversation
+      });
+  }
+
   render() {
     let conv = this.props.conversation;
     let lastMsg = conv.messages[conv.messages.length-1] || {timestamp:'', message:''};
@@ -185,7 +239,7 @@ class ChatHistoryItem extends Component {
     return (
       <li className="chat-history-item">
         <NavLink to={'/Chat/' + conv.id}>
-          <p className="title"><strong>{conv.alias || conv.key}</strong><em>{ lastMsg.timestamp && timestamp.format(timeFormat)}</em></p>
+          <p className="title"><strong>{conv.alias || conv.key}</strong><em>{ lastMsg.timestamp && timestamp.format(timeFormat)}</em><Glyphicon onClick={this.showContact.bind(this)} glyph="info-sign" /></p>
           <p className="subtitle">{lastMsg.message}</p>
         </NavLink>
       </li>

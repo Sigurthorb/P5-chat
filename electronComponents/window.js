@@ -88,6 +88,7 @@ function show() {
 
 //This is called when the app is quitting
 function close() {
+  console.log('Clearing storage....');
   return new Promise((resolve, reject) => {
     //clear localStorage
     mainWindow.webContents.executeJavaScript('localStorage.removeItem("appUser")');

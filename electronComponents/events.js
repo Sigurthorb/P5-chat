@@ -70,6 +70,13 @@ module.exports = function(ipcMain, dialog, _windowModule) {
     }
   });
 
+  ipcMain.on("RemoveSymmetricKey", function(evt, key) {
+    if(server) {
+      console.log("Removing Symmetric Key ", key, " to the db");
+      server.removeSymmetricKey(key);
+    }
+  });
+
   ipcMain.on("JoinNetwork", function(evt, params) {
     if(!server) {
       console.log("Joining Network...");

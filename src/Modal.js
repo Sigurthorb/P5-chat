@@ -73,6 +73,74 @@ export class AddContactModal extends Component {
 	}
 }
 
+export class ContactDetailsModal extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { edit:false, alias:this.props.contact.alias, channel:this.props.contact.channel};
+	}
+
+	onChange(e){
+    	this.setState({ [e.target.name]: e.target.value });
+  	}
+
+  	showEdit(){
+  		this.setState({ edit:true});
+  	}
+
+  	hideEdit(){
+  		this.setState({ edit:false });
+  	}
+
+
+	closeModal(){
+		this.setState({ edit:false });
+		this.props.handleClose();
+	}
+
+	saveContact(){
+		this.setState({ edit:false });
+		this.props.saveContact({alias:this.state.alias, channel:this.state.channel});
+	}
+
+	blockContact(){
+		this.setState({ edit:false });
+		this.props.blockContact();
+	}
+
+	render(){
+		let contact = this.props.contact;
+		let edit = this.state.edit;
+
+		return(
+	        <Modal show={this.props.show} onHide={this.props.handleClose} dialogClassName="contact-details-modal">
+	          <Modal.Header closeButton>
+	            <Modal.Title>Contact Details</Modal.Title>
+	          </Modal.Header>
+	          <Modal.Body>
+		        <form>
+		        	<label>Name </label>
+		        	{edit && <input name="alias" type="text" placeholder="optional" value={this.state.alias} onChange={this.onChange.bind(this)} />}
+		        	{!edit && <strong className="alias">{contact.alias}</strong>}
+	      			<label>Channel </label>
+                  	{edit && <input id="channel" name="channel" type="text" placeholder="opt" value={this.state.channel} onChange={this.onChange.bind(this)} />}
+                  	{!edit && <strong className="channel">{contact.channel}</strong>}
+                  	<br/>
+                  	<label>Key </label>
+                  	<strong>{contact.key}</strong>
+		        </form>
+	          </Modal.Body>
+	          <Modal.Footer>
+	          	<button className="btn btn-danger pull-left" onClick={this.props.blockContact.bind(this)}>Block</button>
+	          	{!edit && <button className="btn btn-light" onClick={this.closeModal.bind(this)}>Close</button>}
+	          	{edit && <button className="btn btn-light" onClick={this.hideEdit.bind(this)}>Cancel</button>}
+	          	{edit && <button className="btn btn-light" onClick={this.saveContact.bind(this)}>Save</button>}
+	          	{!edit && <button className="btn" onClick={this.showEdit.bind(this)}>Edit</button>}
+	          </Modal.Footer>
+	        </Modal>
+		);
+	}
+}
+
 export class MyInfoModal extends Component {
 	constructor(props){
 		super(props);

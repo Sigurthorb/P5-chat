@@ -267,6 +267,24 @@ header h2 {
 	/*box-shadow:0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);*/
 }
 
+.chat-history-item .glyphicon-info-sign {
+	float: right;
+    font-size: 20px;
+    display: none;
+}
+
+.chat-history-item:hover .glyphicon-info-sign {
+	display: block;
+}
+
+.chat-history-item:hover em {
+	display: none;
+}
+
+.chat-history-item .glyphicon-info-sign:hover {
+	color:#ddd;
+}
+
 .chat-history-item a {
 	padding:15px 10px;
 	display:block;
@@ -443,6 +461,11 @@ header h2 {
 	margin:0 5%;
 }
 
+.contact-details-modal > .modal-content {
+	width:70%;
+	margin:0 15%;
+}
+
 .my-info-modal > .modal-content {
 	width:80%;
 	margin:0 10%;
@@ -478,7 +501,7 @@ header h2 {
 	float:right;
 }
 
-.add-contact-modal input[name=alias]  {
+.add-contact-modal input[name=alias] {
     margin-bottom: 35px;
     width: 230px;
     margin-right: 66px;
@@ -495,6 +518,25 @@ header h2 {
 	height:170px;
 	font-size: 12px;
 	font-family: serif;
+}
+
+.contact-details-modal label {
+	padding-right:10px;
+	margin:20px 0;
+}
+
+.contact-details-modal .alias {
+	width:200px;
+	display: inline-block;
+}
+
+.contact-details-modal input[name=alias] {
+	width:160px;
+	margin-right:40px;
+}
+
+.contact-details-modal input[name=channel] {
+	width:50px;
 }
 
 .my-info-modal .key {
