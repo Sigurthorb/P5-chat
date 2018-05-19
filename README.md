@@ -10,12 +10,6 @@ Install Chat dependencies - `npm i`
 
 Install dependencies of P5-node - https://github.com/Sigurthorb/P5
 
-#### Development
-
-Start React - `npm start`
-
-Start Electron - `npm run electron-dev`
-
 #### Building
 
 Build UI - `npm run build`
